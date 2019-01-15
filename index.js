@@ -53,14 +53,14 @@ appsFlyer.setGCMProjectNumber = (gcmProjectNumber, successC, errorC) => {
 };
 
 /**
- * For Android only (GCM). iOS uses 'didRegisterForRemoteNotificationsWithDeviceToken' in AppDelegate.m 
+ * For Android only (GCM). iOS uses 'didRegisterForRemoteNotificationsWithDeviceToken' in AppDelegate.m
  */
 appsFlyer.enableUninstallTracking = (gcmProjectNumber, successC) => {
     return RNAppsFlyer.enableUninstallTracking(gcmProjectNumber, successC);
 };
 
 /**
- * For Android only (GCM or Firebase). 
+ * For Android only (GCM or Firebase).
  */
 appsFlyer.updateServerUninstallToken = (token, successC) => {
     return RNAppsFlyer.updateServerUninstallToken(token, successC);
@@ -108,15 +108,15 @@ appsFlyer.onInstallConversionData = (callback) => {
         const listener = NativeAppEventEmitter.addListener('onInstallConversionData',
             (_data) => {
                 if(callback && typeof(callback) === typeof(Function)){
-                    try{
-                        let data = JSON.parse(_data);
-                        callback(data);
+                    let data
+                    try {
+                        data = JSON.parse(_data);
                     }
-                    catch(_error){
-                        //throw new AFParseJSONException("...");
-                        //TODO: for today we return an error in callback
-                        callback(new AFParseJSONException("Invalid data structure", _data));
+                    catch (_error) {
+                        callback(new AFParseJSONException("Invalid data structure", _data), null);
+                        return
                     }
+                    callback(null, data);
                 }
             }
         );
